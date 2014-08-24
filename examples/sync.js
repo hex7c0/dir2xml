@@ -25,5 +25,6 @@ var DIR = __dirname + '/..';
 // index
 require('fs').writeFileSync('sync.xml', dir(DIR, {
     sync: true,
-    exclude: /node_modules/
+    exclude: /node_modules/,
+    hash: 'sha1'
 }));
