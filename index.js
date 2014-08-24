@@ -4,7 +4,7 @@
  * @module dir2xml
  * @package dir2xml
  * @subpackage main
- * @version 0.0.1
+ * @version 0.0.2
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -41,6 +41,26 @@ var footer = '</home>';
 function wrapper(my) {
 
     /**
+     * calculate hash of file
+     * 
+     * @function checksum
+     * @param {Object|false} obj - object output
+     * @param {String} file - absolute path name
+     * @return {Object|String}
+     */
+    function checksum(obj, file) {
+
+        var check = crypto(my.hash);
+        var ff = fs.readFileSync(file);
+        check.update(ff);
+        if (obj) {
+            obj.hash = check.digest('hex');
+            return obj;
+        }
+        return '<hash>' + check.digest('hex') + '</hash>';
+    }
+
+    /**
      * end of work with cache
      * 
      * @function cached
@@ -56,7 +76,7 @@ function wrapper(my) {
 
             stat = fs.statSync(my.root);
             if (stat && STORY.mtime === stat.mtime.getTime()
-                    && STORY.json === my.json) {
+                    && STORY.json === my.json && STORY.hash === my.hash) {
                 return STORY.body;
             }
             STORY = Object.create(null);
@@ -78,6 +98,7 @@ function wrapper(my) {
                 STORY.body = body;
                 STORY.mtime = stat.mtime.getTime();
                 STORY.json = my.json;
+                STORY.hash = my.hash;
             }
         }
         return body;
@@ -140,12 +161,9 @@ function wrapper(my) {
         if (dir) {
             o.type = 'dir';
         } else {
-            var checksum = crypto('md5');
-            var ff = fs.readFileSync(abs);
-            checksum.update(ff);
             o.atime = stats.atime.getTime();
             o.size = stats.size;
-            o.hash = checksum.digest('hex');
+            o = hash(o, abs);
             o.type = 'file';
         }
         return [ head, null ];
@@ -178,12 +196,9 @@ function wrapper(my) {
         if (dir) {
             a = '</dir>';
         } else {
-            var checksum = crypto('md5');
-            var ff = fs.readFileSync(abs);
-            checksum.update(ff);
             h += '<atime>' + stats.atime.getTime() + '</atime>';
             h += '<size>' + stats.size + '</size>';
-            h += '<hash>' + checksum.digest('hex') + '</hash>';
+            h += hash(false, abs);
             h += '</file>';
         }
         return [ head + h, after + a ];
@@ -310,11 +325,25 @@ function wrapper(my) {
     var CCdir = 0;
     var CCfile = 0;
 
+    // cache or not
     var end = simple;
     if (my.cache) {
         end = cached;
     }
 
+    // hash
+    var hash = checksum;
+    if (!my.hash) {
+        hash = function(obj) {
+
+            if (obj) {
+                return obj;
+            }
+            return '';
+        };
+    }
+
+    // output
     var build = xml;
     if (my.json) {
         build = json;
@@ -357,7 +386,8 @@ module.exports = function dir(root, options) {
          * @todo: dir_callback. Boolean(options.sync)
          */
         sync: true,
-        json: Boolean(options.json)
+        json: Boolean(options.json),
+        hash: options.hash == false ? false : String(options.hash || 'md5')
     };
     return wrapper(my);
 };
