@@ -4,7 +4,7 @@
  * @module dir2xml
  * @package dir2xml
  * @subpackage main
- * @version 0.0.2
+ * @version 0.0.3
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -75,8 +75,8 @@ function wrapper(my) {
         if (my.cache && STORY.root === my.root) {
 
             stat = fs.statSync(my.root);
-            if (stat && STORY.mtime === stat.mtime.getTime()
-                    && STORY.json === my.json && STORY.hash === my.hash) {
+            if (stat && STORY.mtime === stat.mtime.getTime() && STORY.json === my.json
+                    && STORY.hash === my.hash) {
                 return STORY.body;
             }
             STORY = Object.create(null);
@@ -149,9 +149,9 @@ function wrapper(my) {
         } else {
             index = CCfile++;
         }
-        try {
+        if (head[root]) {
             o = head[root][index] = Object.create(null);
-        } catch (e) {
+        } else {
             head[root] = Object.create(null);
             o = head[root][index] = Object.create(null);
         }
@@ -234,15 +234,13 @@ function wrapper(my) {
                         var hea;
                         var afte;
                         if (stats.isDirectory()) {
-                            var r = build(head, after, file, root, stats, true,
-                                    prova);
+                            var r = build(head, after, file, root, stats, true, prova);
                             hea = r[0];
                             afte = r[1];
                             var head = dir_sync(root, hea, afte); // recursive
                             var after = '';
                         } else {
-                            var r = build(head, after, file, root, stats,
-                                    false, prova);
+                            var r = build(head, after, file, root, stats, false, prova);
                             var head = r[0];
                             var after = r[1];
                         }
