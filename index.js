@@ -4,7 +4,7 @@
  * @module dir2xml
  * @package dir2xml
  * @subpackage main
- * @version 0.0.3
+ * @version 1.0.0
  * @author hex7c0 <hex7c0@gmail.com>
  * @copyright hex7c0 2014
  * @license GPLv3
@@ -83,11 +83,7 @@ function wrapper(my) {
         }
         // build
         var body;
-        if (my.sync) {
-            body = dir_sync(my.root, h, '');
-        } else {
-            body = dir_callback(my.root, h, '');
-        }
+        body = dir_sync(my.root, h, '');
         if (f) {
             body += f;
         }
@@ -116,11 +112,7 @@ function wrapper(my) {
 
         // build
         var body;
-        if (my.sync) {
-            body = dir_sync(my.root, h, '');
-        } else {
-            body = dir_callback(my.root, h, '');
-        }
+        body = dir_sync(my.root, h, '');
         if (f) {
             body += f;
         }
@@ -204,7 +196,6 @@ function wrapper(my) {
         return [ head + h, after + a ];
     }
 
-    // start sync
     /**
      * body
      * 
@@ -253,73 +244,7 @@ function wrapper(my) {
         }
         return head;
     }
-    // end sync
 
-    // start callback
-    /**
-     * body
-     * 
-     * @function dir_callback
-     * @param {String} prova - dir pathname
-     * @param {String} head - header
-     * @param {String} after - post header
-     * @return {String}
-     */
-    // function dir_callback(prova, head, after) {
-    //
-    // fs.stat(prova, function(err, stat) {
-    //
-    // if (err) {
-    // return;
-    // }
-    // fs.readdir(prova, function(err, files) {
-    //
-    // if (err) {
-    // return;
-    // }
-    // for (var i = 0, ii = files.length; i < ii; i++) {
-    // !function(file) {
-    //
-    // if (my.exclude && my.exclude.test(file)) {
-    // return;
-    // }
-    // if (my.dotfiles && file[0] === '.') {
-    // return;
-    // }
-    // var root = prova + PATH.sep + file;
-    // fs.stat(root, function(err, stats) {
-    //
-    // if (err) {
-    // return;
-    // }
-    // var hea;
-    // var afte;
-    // if (stats.isDirectory()) {
-    // var r = build(head, after, file, root, stats,
-    // true);
-    // hea = r[0];
-    // afte = r[1];
-    // var head = mod_sync(root, hea, afte); // recursive
-    // } else {
-    // var r = build(head, after, file, root, stats,
-    // false);
-    // var head = r[0];
-    // var after = r[1];
-    // }
-    // return;
-    // });
-    //
-    // }(files[i]);
-    // }
-    // return;
-    //
-    // });
-    // return;
-    //
-    // });
-    // return head + after;
-    // }
-    // end callback
     var CCdir = 0;
     var CCfile = 0;
 
@@ -380,10 +305,6 @@ module.exports = function dir(root, options) {
         exclude: options.exclude || false,
         dotfiles: options.dotfiles == false ? false : true,
         cache: options.cache == false ? false : true,
-        /**
-         * @todo: dir_callback. Boolean(options.sync)
-         */
-        sync: true,
         json: Boolean(options.json),
         hash: options.hash == false ? false : String(options.hash || 'md5')
     };
