@@ -4,7 +4,7 @@
 [![Build Status](https://travis-ci.org/hex7c0/dir2xml.svg)](https://travis-ci.org/hex7c0/dir2xml)
 [![Dependency Status](https://david-dm.org/hex7c0/dir2xml/status.svg)](https://david-dm.org/hex7c0/dir2xml)
 
-Generating XML file or JSON object that represents a directory structure, with memorization and others customization
+Generating XML file or JSON object that represents a sync directory structure, with memorization and others customization
 
 my original [python code](https://github.com/hex7c0/Dir2Xmlpy)
 
@@ -40,7 +40,6 @@ dir('node_modules');
  - `exclude` - **RegExp** Regular expression for files/dirs exclude *(default "disabled")*
  - `dotfiles`- **Boolean** Flag for hide dotfiles *(default "enabled")*
  - `cache` - **Boolean** Flag for using cache (depends from mtime dir) *(default "enabled")*
- - `sync` - **Boolean** Flag for using "Sync" methods instead of callback only *(default "disabled")*
  - `json` - **Boolean** Flag for display json output instead of html only *(default "disabled")*
  - `hash` - **String | false** Set your [hashes](http://nodejs.org/api/crypto.html#crypto_crypto_gethashes) or disable *(default "md5")*
 
