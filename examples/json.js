@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file json example
  * @module di2xml

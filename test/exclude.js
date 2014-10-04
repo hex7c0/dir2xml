@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 /**
  * @file exclude test
  * @module dir2xml
