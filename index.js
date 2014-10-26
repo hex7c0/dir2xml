@@ -75,8 +75,8 @@ function wrapper(my) {
         if (my.cache && STORY.root === my.root) {
 
             stat = fs.statSync(my.root);
-            if (stat && STORY.mtime === stat.mtime.getTime() && STORY.json === my.json
-                    && STORY.hash === my.hash) {
+            if (stat && STORY.mtime === stat.mtime.getTime()
+                    && STORY.json === my.json && STORY.hash === my.hash) {
                 return STORY.body;
             }
             STORY = Object.create(null);
@@ -201,12 +201,14 @@ function wrapper(my) {
      * 
      * @function dir_sync
      * @param {String} prova - dir pathname
-     * @param {String} head - header
-     * @param {String} after - post header
+     * @param {String} heads - header
+     * @param {String} afters - post header
      * @return {String}
      */
-    function dir_sync(prova, head, after) {
+    function dir_sync(prova, heads, afters) {
 
+        var head = heads;
+        var after = afters;
         var stat = fs.statSync(prova);
         if (stat) {
             var files = fs.readdirSync(prova);
@@ -222,18 +224,19 @@ function wrapper(my) {
                     var root = prova + PATH.sep + file;
                     var stats = fs.statSync(root);
                     if (stats) {
+                        var r;
                         var hea;
                         var afte;
                         if (stats.isDirectory()) {
-                            var r = build(head, after, file, root, stats, true, prova);
+                            r = build(head, after, file, root, stats, true, prova);
                             hea = r[0];
                             afte = r[1];
-                            var head = dir_sync(root, hea, afte); // recursive
-                            var after = '';
+                            head = dir_sync(root, hea, afte); // recursive
+                            after = '';
                         } else {
-                            var r = build(head, after, file, root, stats, false, prova);
-                            var head = r[0];
-                            var after = r[1];
+                            r = build(head, after, file, root, stats, false, prova);
+                            head = r[0];
+                            after = r[1];
                         }
                     }
                 }
@@ -281,10 +284,10 @@ function wrapper(my) {
  * @exports dir
  * @function dir
  * @param {String} root - root path
- * @param {Object} [options] - various options. Check README.md
+ * @param {Object} [opt] - various options. Check README.md
  * @return {Object}
  */
-module.exports = function dir(root, options) {
+function dir(root, opt) {
 
     if (!root) {
         throw new TypeError('root path required');
@@ -299,14 +302,15 @@ module.exports = function dir(root, options) {
     if (!fs.statSync(r).isDirectory()) {
         throw new Error('path is not a directory');
     }
-    var options = options || Object.create(null);
+    var options = opt || Object.create(null);
     var my = {
         root: r,
         exclude: options.exclude || false,
-        dotfiles: options.dotfiles == false ? false : true,
-        cache: options.cache == false ? false : true,
+        dotfiles: options.dotfiles === false ? false : true,
+        cache: options.cache === false ? false : true,
         json: Boolean(options.json),
-        hash: options.hash == false ? false : String(options.hash || 'md5')
+        hash: options.hash === false ? false : String(options.hash || 'md5')
     };
     return wrapper(my);
-};
+}
+module.exports = dir;
