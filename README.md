@@ -1,8 +1,9 @@
 # [dir2xml](http://supergiovane.tk/#/dir2xml)
 
-[![NPM version](https://badge.fury.io/js/dir2xml.svg)](http://badge.fury.io/js/dir2xml)
-[![Build Status](https://travis-ci.org/hex7c0/dir2xml.svg)](https://travis-ci.org/hex7c0/dir2xml)
-[![Dependency Status](https://david-dm.org/hex7c0/dir2xml/status.svg)](https://david-dm.org/hex7c0/dir2xml)
+[![NPM version](https://img.shields.io/npm/v/dir2xml.svg)](https://www.npmjs.com/package/dir2xml)
+[![Linux Status](https://img.shields.io/travis/hex7c0/dir2xml.svg?label=linux)](https://travis-ci.org/hex7c0/dir2xml)
+[![Windows Status](https://img.shields.io/appveyor/ci/hex7c0/dir2xml.svg?label=windows)](https://ci.appveyor.com/project/hex7c0/dir2xml)
+[![Dependency Status](https://img.shields.io/david/hex7c0/dir2xml.svg)](https://david-dm.org/hex7c0/dir2xml)
 
 Generating XML file or JSON object that represents a sync directory structure, with memorization and others customization
 
@@ -29,7 +30,7 @@ var dir = require('dir2xml');
 dir('node_modules');
 ```
 
-### dir(root,[options])
+### dir(root, [options])
 
 #### root
 
@@ -45,6 +46,6 @@ dir('node_modules');
 
 ## Examples
 
-Take a look at my [examples](https://github.com/hex7c0/dir2xml/tree/master/examples)
+Take a look at my [examples](examples)
 
-### [License GPLv3](http://opensource.org/licenses/GPL-3.0)
+### [License GPLv3](LICENSE)
