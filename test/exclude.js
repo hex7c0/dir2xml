@@ -2,7 +2,6 @@
 /**
  * @file exclude test
  * @module dir2xml
- * @package dir2xml
  * @subpackage test
  * @version 0.0.1
  * @author hex7c0 <hex7c0@gmail.com>
@@ -12,30 +11,71 @@
 /*
  * initialize module
  */
-// import
-try {
-    var dir = require('../index.min.js'); // use require('dir2xml') instead
-} catch (MODULE_NOT_FOUND) {
-    console.error(MODULE_NOT_FOUND);
-    process.exit(1);
-}
+var dir = require('..');
+var assert = require('assert');
 
 /*
  * test module
  */
-describe('exclude', function() {
+describe(
+  'exclude',
+  function() {
 
-    it('should return empty "__dirname" dir', function(done) {
+    describe(
+      'xml',
+      function() {
 
-        var xml = dir(__dirname, {
+        it('should return empty "__dirname" dir', function(done) {
+
+          var xml = dir(__dirname, {
             exclude: /.js$/,
             cache: false
+          });
+          assert.equal(xml,
+            '<?xml version="1.0" encoding="UTF-8"?><home></home>');
+          done();
         });
+        it(
+          'should return 1 file into "__dirname" dir',
+          function(done) {
 
-        if (/<?xml version=\"1.0\" encoding=\"UTF-8\"\?><home><\/home>/
-                .test(xml)) {
+            var xml = dir(__dirname, {
+              exclude: /exclude.js$/,
+              cache: false
+            });
+            assert
+            .equal(
+              /^<\?xml version="1.0" encoding="UTF-8"\?><home><file id="0"><name>sync.js<\/name><ctime>[^ ]+<\/hash><\/file><\/home>$/
+              .test(xml), true);
+            assert.equal(/sync.js/.test(xml), true);
+            assert.equal(/exclude.js/.test(xml), false);
             done();
-        }
-        return;
+          });
+      });
+
+    describe('json', function() {
+
+      it('should return empty "__dirname" dir', function(done) {
+
+        var json = JSON.stringify(dir(__dirname, {
+          exclude: /.js$/,
+          json: true,
+          cache: false
+        }));
+        assert.equal(json, '{}');
+        done();
+      });
+      it('should return 1 file into "__dirname" dir', function(done) {
+
+        var json = JSON.stringify(dir(__dirname, {
+          exclude: /exclude.js$/,
+          json: true,
+          cache: false
+        }));
+        assert.equal(/^{"[^ ]+","type":"file"}}}$/.test(json), true);
+        assert.equal(/sync.js/.test(json), true);
+        assert.equal(/exclude.js/.test(json), false);
+        done();
+      });
     });
-});
+  });
