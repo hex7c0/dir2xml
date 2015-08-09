@@ -26,11 +26,11 @@
   "dependencies": {
   },
   "devDependencies": {
-    "mocha": "~2.1",
     "grunt-contrib-clean": "~0.6",
-    "grunt-contrib-uglify": "~0.7",
+    "grunt-contrib-uglify": "~0.9",
     "grunt-contrib-jshint": "~0.11",
-    "grunt-endline": "~0.2"
+    "grunt-endline": "~0.2",
+    "mocha": "~2.2"
   },
   "engines": {
     "node": ">=0.10"
