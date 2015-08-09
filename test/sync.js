@@ -19,43 +19,73 @@ var assert = require('assert');
  */
 describe('sync', function() {
 
-  var cache;
+  describe('cache', function() {
 
-  describe('xml', function() {
+    var cache;
 
-    it('should return XML string', function(done) {
+    describe('xml', function() {
 
-      cache = dir(__dirname);
-      assert.notDeepEqual(cache, '');
-      done();
+      it('should return XML string', function(done) {
+
+        cache = dir(__dirname);
+        assert.notDeepEqual(cache, '');
+        done();
+      });
+
+      it('should return same object', function(done) {
+
+        var c = dir(__dirname);
+        assert.deepEqual(cache, c);
+        done();
+      });
     });
 
-    it('should return same object', function(done) {
+    describe('json', function() {
 
-      var c = dir(__dirname);
-      assert.deepEqual(cache, c);
-      done();
+      it('should return JSON object', function(done) {
+
+        cache = dir(__dirname, {
+          json: true
+        });
+        assert.deepEqual(cache[__dirname][0]['name'], 'exclude.js');
+        assert.deepEqual(cache[__dirname][1]['name'], 'sync.js');
+        done();
+      });
+
+      it('should return same object', function(done) {
+
+        var c = dir(__dirname, {
+          json: true
+        });
+        assert.deepEqual(cache, c);
+        done();
+      });
     });
   });
 
-  describe('json', function() {
+  describe('hash', function() {
 
-    it('should return JSON object', function(done) {
+    var md5;
 
-      cache = dir(__dirname, {
+    it('should build XML with "md5" (default) hash', function(done) {
+
+      var xml = dir(__dirname, {
         json: true
       });
-      assert.deepEqual(cache[__dirname][0]['name'], 'exclude.js');
-      assert.deepEqual(cache[__dirname][1]['name'], 'sync.js');
+      assert.notDeepEqual(xml, '');
+      assert.equal(xml[__dirname][0]['hash'].length, 32);
+      md5 = xml[__dirname][0]['hash'];
       done();
     });
+    it('should build XML with "sha512" hash', function(done) {
 
-    it('should return same object', function(done) {
-
-      var c = dir(__dirname, {
-        json: true
+      var xml = dir(__dirname, {
+        json: true,
+        hash: 'sha512'
       });
-      assert.deepEqual(cache, c);
+      assert.notDeepEqual(xml, '');
+      assert.notDeepEqual(xml[__dirname][0]['hash'], md5);
+      assert.equal(xml[__dirname][0]['hash'].length, 128);
       done();
     });
   });
