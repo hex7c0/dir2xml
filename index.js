@@ -12,7 +12,6 @@
 /*
  * initialize module
  */
-// import
 var path = require('path');
 var fs = require('fs');
 
@@ -206,12 +205,11 @@ function wrapper(my) {
     if (stat) {
       var files = fs.readdirSync(prova);
       if (files) {
-        for (var i = 0, ii = files.length; i < ii; i++) {
+        for (var i = 0, ii = files.length; i < ii; ++i) {
           var file = files[i];
           if (my.exclude && my.exclude.test(file)) {
             continue;
-          }
-          if (my.dotfiles && file[0] === '.') {
+          } else if (my.dotfiles && file[0] === '.') {
             continue;
           }
           var root = prova + path.sep + file;
@@ -255,10 +253,7 @@ function wrapper(my) {
   if (!my.hash) {
     hash = function(obj) {
 
-      if (obj) {
-        return obj;
-      }
-      return '';
+      return obj || '';
     };
   }
 
