@@ -103,12 +103,8 @@ function wrapper(my) {
   function simple(h, f) {
 
     // build
-    var body;
-    body = dir_sync(my.root, h, '');
-    if (f) {
-      body += f;
-    }
-    return body;
+    var body = dir_sync(my.root, h, '');
+    return f ? body + f : body;
   }
 
   /**
@@ -233,10 +229,7 @@ function wrapper(my) {
         }
       }
     }
-    if (after) {
-      head += after;
-    }
-    return head;
+    return after ? head + after : head;
   }
 
   var CCdir = 0;
