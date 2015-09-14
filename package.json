@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.1.1",
   "name": "dir2xml",
   "description": "generating XML file that represents a sync directory structure",
   "keywords": [
