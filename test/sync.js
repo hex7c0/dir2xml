@@ -25,16 +25,39 @@ describe('sync', function() {
 
     describe('xml', function() {
 
+      describe('no cache ', function() {
+
+        it('should return XML string', function(done) {
+
+          cache = dir(__dirname, {
+            cache: false
+          });
+          assert.notDeepEqual(cache, '');
+          done();
+        });
+        it('should return same object', function(done) {
+
+          var c = dir(__dirname, {
+            cache: false
+          });
+          assert.deepEqual(cache, c);
+          done();
+        });
+      });
+
       it('should return XML string', function(done) {
 
-        cache = dir(__dirname);
+        cache = dir(__dirname, {
+          cache: true
+        });
         assert.notDeepEqual(cache, '');
         done();
       });
-
       it('should return same object', function(done) {
 
-        var c = dir(__dirname);
+        var c = dir(__dirname, {
+          cache: true
+        });
         assert.deepEqual(cache, c);
         done();
       });
@@ -42,20 +65,44 @@ describe('sync', function() {
 
     describe('json', function() {
 
+      describe('no cache', function() {
+
+        it('should return JSON object', function(done) {
+
+          cache = dir(__dirname, {
+            json: true,
+            cache: false
+          });
+          assert.deepEqual(cache[__dirname][0]['name'], 'exclude.js');
+          assert.deepEqual(cache[__dirname][1]['name'], 'sync.js');
+          done();
+        });
+        it('should return same object', function(done) {
+
+          var c = dir(__dirname, {
+            json: true,
+            cache: false
+          });
+          assert.deepEqual(cache, c);
+          done();
+        });
+      });
+
       it('should return JSON object', function(done) {
 
         cache = dir(__dirname, {
-          json: true
+          json: true,
+          cache: true
         });
         assert.deepEqual(cache[__dirname][0]['name'], 'exclude.js');
         assert.deepEqual(cache[__dirname][1]['name'], 'sync.js');
         done();
       });
-
       it('should return same object', function(done) {
 
         var c = dir(__dirname, {
-          json: true
+          json: true,
+          cache: true
         });
         assert.deepEqual(cache, c);
         done();
@@ -65,28 +112,105 @@ describe('sync', function() {
 
   describe('hash', function() {
 
+    var fs = require('fs');
+    var ff = fs.readFileSync(__filename);
+    var crypto = require('crypto').createHash;
+    var md5Hash = crypto('md5');
+    var shaHash = crypto('sha512');
+
+    md5Hash.update(ff);
+    md5Hash = md5Hash.digest('hex');
+    shaHash.update(ff);
+    shaHash = shaHash.digest('hex');
+
     var md5;
 
-    it('should build XML with "md5" (default) hash', function(done) {
+    describe('xml', function() {
 
-      var xml = dir(__dirname, {
-        json: true
+      it('should build XML with "md5" (default) hash', function(done) {
+
+        var xml = dir(__dirname);
+        assert.notDeepEqual(xml, '');
+        assert.notEqual(xml.search(md5Hash), -1);
+        assert.equal(xml.search(shaHash), -1);
+        done();
       });
-      assert.notDeepEqual(xml, '');
-      assert.equal(xml[__dirname][0]['hash'].length, 32);
-      md5 = xml[__dirname][0]['hash'];
-      done();
+      it('should build XML with "sha512" hash', function(done) {
+
+        var xml = dir(__dirname, {
+          hash: 'sha512'
+        });
+        assert.notDeepEqual(xml, '');
+        assert.notEqual(xml.search(shaHash), -1);
+        assert.equal(xml.search(md5Hash), -1);
+        done();
+      });
+      it('shouldn\'t build XML with "foobar" hash', function(done) {
+
+        assert.throws(function() {
+
+          var xml = dir(__dirname, {
+            hash: 'foobar'
+          });
+        },
+          function(err) {
+
+            if ((err instanceof Error)
+              && /Digest method not supported/.test(err)) {
+              return true;
+            }
+          }, "wrong hash");
+        done();
+      });
     });
-    it('should build XML with "sha512" hash', function(done) {
 
-      var xml = dir(__dirname, {
-        json: true,
-        hash: 'sha512'
+    describe('json', function() {
+
+      it('should build JSON with "md5" (default) hash', function(done) {
+
+        var xml = dir(__dirname, {
+          json: true
+        });
+        assert.notDeepEqual(xml, '');
+        assert.equal(xml[__dirname][1]['name'], 'sync.js');
+        assert.equal(xml[__dirname][1]['hash'].length, 32);
+        assert.equal(xml[__dirname][1]['hash'], md5Hash);
+        assert.notEqual(xml[__dirname][1]['hash'], shaHash);
+        md5 = xml[__dirname][1]['hash'];
+        done();
       });
-      assert.notDeepEqual(xml, '');
-      assert.notDeepEqual(xml[__dirname][0]['hash'], md5);
-      assert.equal(xml[__dirname][0]['hash'].length, 128);
-      done();
+      it('should build JSON with "sha512" hash', function(done) {
+
+        var xml = dir(__dirname, {
+          json: true,
+          hash: 'sha512'
+        });
+        assert.notDeepEqual(xml, '');
+        assert.equal(xml[__dirname][1]['name'], 'sync.js');
+        assert.equal(xml[__dirname][1]['hash'].length, 128);
+        assert.equal(xml[__dirname][1]['hash'], shaHash);
+        assert.notEqual(xml[__dirname][1]['hash'], md5Hash);
+        assert.notDeepEqual(xml[__dirname][1]['hash'], md5);
+        done();
+      });
+      it('shouldn\'t build SJON with "foobar" hash', function(done) {
+
+        assert.throws(function() {
+
+          var xml = dir(__dirname, {
+            json: true,
+            hash: 'foobar'
+          });
+        },
+          function(err) {
+
+            if ((err instanceof Error)
+              && /Digest method not supported/.test(err)) {
+              return true;
+            }
+          }, "wrong hash");
+        done();
+      });
     });
   });
 });
