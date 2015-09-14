@@ -73,8 +73,9 @@ describe('sync', function() {
             json: true,
             cache: false
           });
-          assert.deepEqual(cache[__dirname][0]['name'], 'exclude.js');
-          assert.deepEqual(cache[__dirname][1]['name'], 'sync.js');
+          assert.deepEqual(cache[__dirname][0]['name'], 'dotfiles.js');
+          assert.deepEqual(cache[__dirname][1]['name'], 'exclude.js');
+          assert.deepEqual(cache[__dirname][2]['name'], 'sync.js');
           done();
         });
         it('should return same object', function(done) {
@@ -94,8 +95,9 @@ describe('sync', function() {
           json: true,
           cache: true
         });
-        assert.deepEqual(cache[__dirname][0]['name'], 'exclude.js');
-        assert.deepEqual(cache[__dirname][1]['name'], 'sync.js');
+        assert.deepEqual(cache[__dirname][0]['name'], 'dotfiles.js');
+        assert.deepEqual(cache[__dirname][1]['name'], 'exclude.js');
+        assert.deepEqual(cache[__dirname][2]['name'], 'sync.js');
         done();
       });
       it('should return same object', function(done) {
@@ -172,10 +174,10 @@ describe('sync', function() {
           json: true
         });
         assert.notDeepEqual(xml, '');
-        assert.equal(xml[__dirname][1]['name'], 'sync.js');
-        assert.equal(xml[__dirname][1]['hash'].length, 32);
-        assert.equal(xml[__dirname][1]['hash'], md5Hash);
-        assert.notEqual(xml[__dirname][1]['hash'], shaHash);
+        assert.equal(xml[__dirname][2]['name'], 'sync.js');
+        assert.equal(xml[__dirname][2]['hash'].length, 32);
+        assert.equal(xml[__dirname][2]['hash'], md5Hash);
+        assert.notEqual(xml[__dirname][2]['hash'], shaHash);
         md5 = xml[__dirname][1]['hash'];
         done();
       });
@@ -186,11 +188,11 @@ describe('sync', function() {
           hash: 'sha512'
         });
         assert.notDeepEqual(xml, '');
-        assert.equal(xml[__dirname][1]['name'], 'sync.js');
-        assert.equal(xml[__dirname][1]['hash'].length, 128);
-        assert.equal(xml[__dirname][1]['hash'], shaHash);
-        assert.notEqual(xml[__dirname][1]['hash'], md5Hash);
-        assert.notDeepEqual(xml[__dirname][1]['hash'], md5);
+        assert.equal(xml[__dirname][2]['name'], 'sync.js');
+        assert.equal(xml[__dirname][2]['hash'].length, 128);
+        assert.equal(xml[__dirname][2]['hash'], shaHash);
+        assert.notEqual(xml[__dirname][2]['hash'], md5Hash);
+        assert.notDeepEqual(xml[__dirname][2]['hash'], md5);
         done();
       });
       it('shouldn\'t build SJON with "foobar" hash', function(done) {
