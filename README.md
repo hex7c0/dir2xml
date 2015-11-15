@@ -1,4 +1,4 @@
-# [dir2xml](http://supergiovane.tk/#/dir2xml)
+# [dir2xml](https://github.com/hex7c0/dir2xml)
 
 [![NPM version](https://img.shields.io/npm/v/dir2xml.svg)](https://www.npmjs.com/package/dir2xml)
 [![Linux Status](https://img.shields.io/travis/hex7c0/dir2xml.svg?label=linux)](https://travis-ci.org/hex7c0/dir2xml)

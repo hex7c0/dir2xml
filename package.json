@@ -1,5 +1,5 @@
 {
-  "version": "1.1.1",
+  "version": "1.1.2",
   "name": "dir2xml",
   "description": "generating XML file that represents a sync directory structure",
   "keywords": [
@@ -8,7 +8,7 @@
     "json"
   ],
   "preferGlobal": false,
-  "homepage": "http://supergiovane.tk/#/dir2xml",
+  "homepage": "https://github.com/hex7c0/dir2xml",
   "author": {
     "name": "hex7c0",
     "email": "hex7c0@gmail.com",
