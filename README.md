@@ -1,7 +1,7 @@
 # [dir2xml](https://github.com/hex7c0/dir2xml)
 
 [![NPM version](https://img.shields.io/npm/v/dir2xml.svg)](https://www.npmjs.com/package/dir2xml)
-[![Linux Status](https://img.shields.io/travis/hex7c0/dir2xml.svg?label=linux)](https://travis-ci.org/hex7c0/dir2xml)
+[![Linux Status](https://img.shields.io/travis/hex7c0/dir2xml.svg?label=linux-osx)](https://travis-ci.org/hex7c0/dir2xml)
 [![Windows Status](https://img.shields.io/appveyor/ci/hex7c0/dir2xml.svg?label=windows)](https://ci.appveyor.com/project/hex7c0/dir2xml)
 [![Dependency Status](https://img.shields.io/david/hex7c0/dir2xml.svg)](https://david-dm.org/hex7c0/dir2xml)
 [![Coveralls](https://img.shields.io/coveralls/hex7c0/dir2xml.svg)](https://coveralls.io/r/hex7c0/dir2xml)
