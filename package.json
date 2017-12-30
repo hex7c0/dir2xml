@@ -1,5 +1,5 @@
 {
-  "version": "1.3.0",
+  "version": "1.4.0",
   "name": "dir2xml",
   "description": "generating XML file that represents a sync directory structure",
   "keywords": [
@@ -38,6 +38,7 @@
   },
   "scripts": {
     "prepare": "npm prune",
+    "prepublishOnly": "grunt",
     "test": "mocha --bail --check-leaks",
     "test-cov": "istanbul cover node_modules/mocha/bin/_mocha --report lcovonly"
   },
